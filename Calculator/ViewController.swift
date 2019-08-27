@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         
-        var number = 0.0
+        var number: Double
         
         isFinishedTypingNumber = true
 
@@ -40,16 +40,34 @@ class ViewController: UIViewController {
     
     @IBAction func numButtonPressed(_ sender: UIButton) {
         
+        var currentDisplayValue: Double
+        
         if let numValue = sender.currentTitle {
             
             if isFinishedTypingNumber {
                 displayLabel.text = numValue
                 isFinishedTypingNumber = false
             } else {
+                
+                if numValue == "." {
+                    
+                    if let val = Double(displayLabel.text!) {
+                        currentDisplayValue = val
+                    }
+                    else {
+                        fatalError("Unconvertable")
+                    }
+                
+                    let isInt = floor(currentDisplayValue) == currentDisplayValue
+                
+                    if !isInt {
+                        return
+                    }
+                }
+                
                 displayLabel.text = displayLabel.text! + numValue
             }
         }
     }
-
 }
 
