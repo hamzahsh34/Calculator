@@ -12,35 +12,37 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
     private var isFinishedTypingNumber: Bool = true
+    private var displayValue: Double {
+        get {
+            if let num = Double(displayLabel.text!) {
+                return num
+            } else {
+                fatalError("Unconvertable")
+            }
+        }
+        set {
+            displayLabel.text = String(newValue)
+        }
+    }
     
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         
-        var number: Double
-        
         isFinishedTypingNumber = true
-
-        if let num = Double(displayLabel.text!) {
-            number = num
-        } else {
-            fatalError("Unconvertable")
-        }
         
         if let calcMethod = sender.currentTitle {
             if calcMethod == "+/-" {
-                displayLabel.text = String(number * -1)
+                displayValue *= -1
             } else if calcMethod == "AC" {
                 displayLabel.text = "0"
             } else if calcMethod == "%" {
-                displayLabel.text = String(number * 0.01)
+                displayValue *= 0.01
             }
         }
     }
 
     
     @IBAction func numButtonPressed(_ sender: UIButton) {
-        
-        var currentDisplayValue: Double
         
         if let numValue = sender.currentTitle {
             
@@ -50,15 +52,8 @@ class ViewController: UIViewController {
             } else {
                 
                 if numValue == "." {
-                    
-                    if let val = Double(displayLabel.text!) {
-                        currentDisplayValue = val
-                    }
-                    else {
-                        fatalError("Unconvertable")
-                    }
                 
-                    let isInt = floor(currentDisplayValue) == currentDisplayValue
+                    let isInt = floor(displayValue) == displayValue
                 
                     if !isInt {
                         return
